@@ -1,0 +1,77 @@
+
+########################################################################
+###### Help Functions
+### Axe choice: this function returns the choiced axe
+axeChoice = function(axe){
+  if (is.null(axe) || axe == "") {
+    return(NULL)
+  }else{
+    return(axe)
+  }
+}
+### Axe Results: this function returns the values selected by the user before selecting the next axe
+axeResults = function(axeOutput){
+  if (is.null(axeOutput) || axeOutput == "") {
+    return(NULL)
+  }else{
+    return(paste(axeOutput, collapse = "','"))
+  }
+}
+### Axe not null or empty: this function returns if an axe is selected or not in the selectinput
+axeHasVal = function(axe){
+  return(!is.null((axe)) && length(axe) > 0 && !identical(axe,""))
+}
+########################################################################
+######### reactive axis
+  This reactive returns for every axe the 
+  1. the selected axe
+  2. the valuse corresponding to trhis choice
+  ###Axe1
+  recAxe1c = reactive({
+    axeChoice(input$firstAxe)
+  })
+  recAxe1r = reactive({
+    axeResults(input$firstAxeOutput)
+  })
+    
+    ############################################################################
+    ### Query String Building
+    This function returns un string (query),
+    @ axeName: represent the axe select input 
+    @ NumAxe: for find at any axe we are
+    
+    queryString <- function(axeName, NumAxe) 
+    
+    
+    ### buildQuery 
+    returns the query corresponding to every axe,
+    
+
+### Data display
+returns the reactive data frame, if the user dosen't  choose some values from the axe output the data frame remains the same
+
+  data = reactive({
+      df= Moore
+      if (axeHasVal(input$firstAxeOutput)){ 
+        query = paste("select * from Moore WHERE ", input$firstAxe , " IN ('", recAxe1r() , "') ")
+        df = sqldf(query)
+      }
+      
+      if (axeHasVal(input$secondAxeOutput)){
+        query = paste("select * from Moore WHERE ", input$secondAxe , " IN ('", recAxe2r() , "') ")
+        df = sqldf(query)
+      }
+      
+      if (axeHasVal(input$thirddAxeOutput)){
+        query = paste("select * from Moore WHERE ", input$thirddAxe , " IN ('", recAxe3r() , "') ")
+        df = sqldf(query)
+      }
+      
+      if (axeHasVal(input$fourthAxeOutput)){
+        query = paste("select * from Moore WHERE ", input$fourthAxe , " IN ('", recAxe4r() , "') ")
+        df = sqldf(query)
+      }
+      
+      return(df)
+    })
+   
